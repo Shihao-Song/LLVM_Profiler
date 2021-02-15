@@ -34,6 +34,11 @@ namespace{
       return false;
     }
 
+    // Out instr. tools is compiled (to .bc) with hook_funcs_identify
+    // for every BB in intru. tools, I planted a XOR 0x01234567, 0x89ABCDEF
+    // to identify instru. blocks, avoiding to instrument our intru. tools.
+    // I found this is XOR CONSTANT, CONSTANT is relatively safe
+    // to use because usually these instructions will be folded
     virtual bool runOnBasicBlock(Function::iterator &BB)
     {
       LLVMContext &C = BB->getContext();

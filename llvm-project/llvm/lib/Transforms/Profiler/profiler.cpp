@@ -49,9 +49,15 @@ namespace{
       std::string func_name = f_name.str();
       std::string bb_name = BB->getName().str();
 
-      // First, check if the block is from our instru. tools
       // If empty block, return back
       if (BB->begin() == BB->end()) { return true; }
+
+      // First, check if the BB is from our instru. tools
+      // Out instr. tools is compiled (to .bc) with hook_funcs_identify
+      // for every BB in intru. tools, I planted a XOR 0x01234567, 0x89ABCDEF
+      // to identify instru. blocks, avoiding to instrument our intru. tools.
+      // I found this is XOR CONSTANT, CONSTANT is relatively safe
+      // to use because usually these instructions will be folded.
       BasicBlock::iterator special_instr = BB->end();
       --special_instr;
       --special_instr;
@@ -75,7 +81,7 @@ namespace{
       }
 
       // Second, plant the hooks.
-      // errs() << "  " << func_name << " : " << bb_name << "\n" ;
+      errs() << "  Instru.: " << func_name << "\n" ;
       for(BasicBlock::iterator BI = BB->begin(), BE = BB->end(); 
         BI != BE; ++BI)
       {

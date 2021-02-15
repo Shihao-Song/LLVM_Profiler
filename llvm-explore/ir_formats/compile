@@ -1,0 +1,3 @@
+cmake ../llvm-project/llvm -G Ninja -DCMAKE_BUILD_TYPE="Release" -DCMAKE_INSTALL_PREFIX="../llvm-install" -DLLVM_ENABLE_PROJECTS="clang"
+
+ninja && ninja install
